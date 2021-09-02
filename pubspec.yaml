@@ -29,6 +29,7 @@ dependencies:
   palette_generator: ^0.3.0
   flutter_bloc: ^7.2.0
   equatable: ^2.0.3
+  path_provider: ^2.0.3
 
 
 dev_dependencies:

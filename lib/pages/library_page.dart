@@ -10,36 +10,43 @@ class LibraryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Library'),
-      ),
-      body: Container(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: [
-              ImageCard(),
-              ImageCard(),
-              ImageCard(),
-              ImageCard(),
-              ImageCard(),
-              ImageCard(),
-            ],
-          ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Library'),
+          automaticallyImplyLeading: false,
         ),
+        body: BlocBuilder<XpaletteCubit, XpaletteState>(
+          builder: (context, state) {
+            if (state is XpaletteLibraryLoadedState) {
+              print('interestin');
+              print(state.images.length);
+              List<ImageCard> previews =  state.images.map((item) => ImageCard()).toList();
+              print(previews.length);
+
+              return Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: previews,
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            BlocProvider.of<XpaletteCubit>(context).takePhoto();
+          },
+          tooltip: 'Add an image',
+          child: Icon(Icons.add_a_photo_rounded),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          BlocProvider.of<XpaletteCubit>(context).takePhoto();
-
-          //BlocProvider.of<XpaletteCubit>(context).processSelectedImage(_image);
-
-        },
-        tooltip: 'Add an image',
-        child: Icon(Icons.add_a_photo_rounded),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

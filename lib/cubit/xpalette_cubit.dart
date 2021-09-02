@@ -11,25 +11,51 @@ part 'xpalette_state.dart';
 class XpaletteCubit extends Cubit<XpaletteState> {
   XpaletteCubit() : super(XpaletteInitialState());
 
+
+  void loadImages(){
+    print('start loading');
+    emit(XpaletteLibraryLoadedState(images: [AssetImage('images/il.jpg'), AssetImage('images/il.jpg')]));
+    //emit(XpaletteResultLoadingState());
+    print('done loading');
+}
+
   void processSelectedImage(ImageProvider image) async{
-    //emit(XpaletteResult(AssetImage('images/il.jpg')));
     PaletteGenerator palette =
         await PaletteGenerator.fromImageProvider(image);
 
     emit(XpaletteResultState(image: image, palette: palette));
   }
 
+  /// снять фото камерой
   void takePhoto() async{
     emit(XpaletteResultLoadingState());
+
     final ImagePicker _picker = ImagePicker();
-    // Pick an image
-    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-    if (photo == null){
+    final XFile? photoFile = await _picker.pickImage(source: ImageSource.camera);
+    if (photoFile == null){
       emit(XpaletteInitialState());
     } else {
-      ImageProvider _image = await Util.xfileToImage(photo);
-      processSelectedImage(_image);
+      ImageProvider image = await Util.xfileToImage(photoFile);
+      processSelectedImage(image);
     }
+  }
 
+
+  /// выбрать фото из галереи
+  void selectImageFromGallery() async{
+    emit(XpaletteResultLoadingState());
+
+    final ImagePicker _picker = ImagePicker();
+    final XFile? imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (imageFile == null){
+      emit(XpaletteInitialState());
+    } else {
+      ImageProvider image = await Util.xfileToImage(imageFile);
+      processSelectedImage(image);
+    }
+  }
+
+  void selectImageFromLibrary() async{
+    emit(XpaletteResultLoadingState());
   }
 }

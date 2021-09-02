@@ -10,59 +10,62 @@ class ResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<XpaletteCubit, XpaletteState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<XpaletteCubit, XpaletteState>(
       builder: (context, state) {
         if (state is XpaletteResultState) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('Result'),
-            ),
-            body: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Hero(
-                      tag: 'photo',
-                      //child: Image.asset('images/il.jpg'),
-                      child: Image(
-                        image: state.image,
+          return WillPopScope(
+            onWillPop: () async{
+              BlocProvider.of<XpaletteCubit>(context).emit(XpaletteInitialState());
+              return true;
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text('Result'),
+              ),
+              body: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Hero(
+                        tag: 'photo',
+                        //child: Image.asset('images/il.jpg'),
+                        child: Image(
+                          image: state.image,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    // child: GridView.extent(
-                    //   maxCrossAxisExtent: 90,
-                    //   children: [
-                    //     BigBoxColored(color: Color(0xFFFFFF00)),
-                    //     BigBoxColored(color: Color(0xFF00FF88)),
-                    //     BigBoxColored(color: Color(0xFF00FF88)),
-                    //     BigBoxColored(color: Color(0xFF00FFFF)),
-                    //     BigBoxColored(color: Color(0xFF00FF00)),
-                    //     BigBoxColored(color: Color(0xFF00FF88)),
-                    //     BigBoxColored(color: Color(0xFFAAFF00)),
-                    //     BigBoxColored(color: Color(0xFF00FF88)),
-                    //     BigBoxColored(color: Color(0xFF00FF88)),
-                    //   ],
-                    // ),
-                    child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 90),
-                        itemCount: state.palette.colors.length,
-                        itemBuilder: (context, index) {
-                          return BigBoxColored(
-                              color: state.palette.colors.elementAt(index));
-                        }),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      // child: GridView.extent(
+                      //   maxCrossAxisExtent: 90,
+                      //   children: [
+                      //     BigBoxColored(color: Color(0xFFFFFF00)),
+                      //     BigBoxColored(color: Color(0xFF00FF88)),
+                      //     BigBoxColored(color: Color(0xFF00FF88)),
+                      //     BigBoxColored(color: Color(0xFF00FFFF)),
+                      //     BigBoxColored(color: Color(0xFF00FF00)),
+                      //     BigBoxColored(color: Color(0xFF00FF88)),
+                      //     BigBoxColored(color: Color(0xFFAAFF00)),
+                      //     BigBoxColored(color: Color(0xFF00FF88)),
+                      //     BigBoxColored(color: Color(0xFF00FF88)),
+                      //   ],
+                      // ),
+                      child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 90),
+                          itemCount: state.palette.colors.length,
+                          itemBuilder: (context, index) {
+                            return BigBoxColored(
+                                color: state.palette.colors.elementAt(index));
+                          }),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         } else {

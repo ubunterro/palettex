@@ -5,6 +5,7 @@ import 'package:palettex/cubit/xpalette_cubit.dart';
 import 'package:palettex/pages/library_page.dart';
 import 'package:palettex/pages/loading_page.dart';
 import 'package:palettex/pages/result_page.dart';
+import 'package:palettex/pages/splash_page.dart';
 
 import 'components/box_colored.dart';
 
@@ -19,17 +20,24 @@ class PaletteApp extends StatelessWidget {
     return MaterialApp(
       title: 'PaletteX',
       theme: ThemeData.dark(),
-      home: BlocBuilder<XpaletteCubit, XpaletteState>(
-        builder: (_, state){
-          if (state is XpaletteInitialState){
-            return LibraryPage();
-          } else if (state is XpaletteResultState) {
-            return ResultPage();
-          } else {
-            return LoadingPage();
-          }
-        },
-      ),
+      routes: {
+        '/': (context) => SplashPage(),
+        '/library': (context) => LibraryPage(),
+        '/result': (context) => ResultPage(),
+        '/loading': (context) => LoadingPage()
+      },
+      initialRoute: '/library',
+      // home: BlocBuilder<XpaletteCubit, XpaletteState>(
+      //   builder: (_, state){
+      //     if (state is XpaletteInitialState){
+      //       return LibraryPage();
+      //     } else if (state is XpaletteResultState) {
+      //       return ResultPage();
+      //     } else {
+      //       return LoadingPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }

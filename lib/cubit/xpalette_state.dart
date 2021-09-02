@@ -5,19 +5,29 @@ abstract class XpaletteState extends Equatable {
 }
 
 class XpaletteInitialState extends XpaletteState {
-  const XpaletteInitialState();
+  XpaletteInitialState();
 
   @override
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
 
-class XpaletteResultLoadingState extends XpaletteState{
+class XpaletteLibraryLoadedState extends XpaletteState{
+  final List<ImageProvider> images;
+
+  const XpaletteLibraryLoadedState({required this.images});
+
+  @override
+  List<Object?> get props => [];
+
+}
+
+class XpaletteResultLoadingState extends XpaletteState {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
 
-class XpaletteResultState extends XpaletteState{
+class XpaletteResultState extends XpaletteState {
   final ImageProvider image;
   final PaletteGenerator palette;
 

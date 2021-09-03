@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:palettex/components/image_card.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
+import 'package:palettex/models/processed_image.dart';
 import 'package:palettex/util.dart';
 
 class LibraryPage extends StatelessWidget {
@@ -21,19 +22,20 @@ class LibraryPage extends StatelessWidget {
           body: BlocBuilder<XpaletteCubit, XpaletteState>(
             builder: (context, state) {
               if (state is XpaletteLibraryLoadedState) {
-                //print('interestin');
-                print(state.images.length);
+                List<ProcessedImage> images =
+                    BlocProvider.of<XpaletteCubit>(context).getImages();
+                //print(images.length);
                 //  генерируем на каждый объект изображения по виджету карточки
-                List<ImageCard> previews =
-                    state.images.map((image) {
-                      return ImageCard(
-                          image: image.image!,
-                          colors: image.colors,
-                          onTap: () {
-                            BlocProvider.of<XpaletteCubit>(context).showPreprocessedImage(image);
-                          },);
-                    }).toList();
-                print(previews.length);
+                List<ImageCard> previews = images.map((image) {
+                  return ImageCard(
+                    image: image.image!,
+                    colors: image.colors,
+                    onTap: () {
+                      BlocProvider.of<XpaletteCubit>(context)
+                          .showPreprocessedImage(image);
+                    },
+                  );
+                }).toList();
 
                 return Container(
                   child: SingleChildScrollView(
@@ -61,8 +63,8 @@ class LibraryPage extends StatelessWidget {
                   child: Icon(Icons.photo_camera)),
               SpeedDialChild(
                   label: "Галерея",
-                  onTap: () async =>
-                      BlocProvider.of<XpaletteCubit>(context).selectImageFromGallery(),
+                  onTap: () async => BlocProvider.of<XpaletteCubit>(context)
+                      .selectImageFromGallery(),
                   child: Icon(Icons.photo)),
             ],
           )

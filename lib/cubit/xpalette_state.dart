@@ -12,10 +12,19 @@ class XpaletteInitialState extends XpaletteState {
   List<Object?> get props => throw UnimplementedError();
 }
 
-class XpaletteLibraryLoadedState extends XpaletteState{
-  final List<ProcessedImage> images;
+class XpaletteLoadingState extends XpaletteState {
+  XpaletteLoadingState();
 
-  const XpaletteLibraryLoadedState({required this.images});
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
+class XpaletteLibraryLoadedState extends XpaletteState{
+
+
+  const XpaletteLibraryLoadedState();
 
   @override
   List<Object?> get props => [];

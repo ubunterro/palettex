@@ -5,7 +5,7 @@ import 'package:palettex/cubit/xpalette_cubit.dart';
 import 'package:palettex/pages/library_page.dart';
 import 'package:palettex/pages/loading_page.dart';
 import 'package:palettex/pages/result_page.dart';
-import 'package:palettex/pages/splash_page.dart';
+import 'package:palettex/cubit/xpalette_navigator.dart';
 
 import 'components/box_colored.dart';
 
@@ -22,7 +22,7 @@ class PaletteApp extends StatelessWidget {
       title: 'PaletteX',
       theme: ThemeData.dark(),
       routes: {
-        '/': (context) => SplashPage(),
+        '/': (context) => XpaletteNavigator(),
         '/library': (context) => LibraryPage(),
         '/result': (context) => ResultPage(),
         '/loading': (context) => LoadingPage()

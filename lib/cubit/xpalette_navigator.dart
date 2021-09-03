@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
 
-class SplashPage extends StatelessWidget {
-  const SplashPage({Key? key}) : super(key: key);
+class XpaletteNavigator extends StatelessWidget {
+  const XpaletteNavigator({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +16,11 @@ class SplashPage extends StatelessWidget {
       /// навнерное, но так оно хоть работает.
       builder: (context, state){
         if (state is XpaletteInitialState){
-          print('initial state');
-          //Navigator.of(context).pushNamed('/library');
           BlocProvider.of<XpaletteCubit>(context).loadImages();
         }
-        return Container(child: Text('1'));
+        return Container(child: Text('error'));
       },
+
       listener: (context, state){
         print(state.runtimeType);
         if (state is XpaletteLibraryLoadedState){

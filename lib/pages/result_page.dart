@@ -14,8 +14,9 @@ class ResultPage extends StatelessWidget {
       builder: (context, state) {
         if (state is XpaletteResultState) {
           return WillPopScope(
-            onWillPop: () async{
-              BlocProvider.of<XpaletteCubit>(context).emit(XpaletteInitialState());
+            onWillPop: () async {
+              BlocProvider.of<XpaletteCubit>(context)
+                  .emit(XpaletteLibraryLoadedState());
               return true;
             },
             child: Scaffold(
@@ -51,8 +52,9 @@ class ResultPage extends StatelessWidget {
                       //   ],
                       // ),
                       child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 90),
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 90),
                           itemCount: state.image.colors!.length,
                           itemBuilder: (context, index) {
                             return BigBoxColored(

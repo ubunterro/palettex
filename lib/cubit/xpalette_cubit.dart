@@ -16,14 +16,25 @@ class XpaletteCubit extends Cubit<XpaletteState> {
   XpaletteCubit() : super(XpaletteInitialState());
 
   ImageRepo repo = ImageFileRepo();
+  bool isInitialized = false;
+  late List<ProcessedImage> images;
 
+  List<ProcessedImage> getImages(){
+    return images;
+  }
+
+  /// вызывается при переходе в InitialState при загрузке приложения, но и при
+  /// выходе из камеры, например, поэтому надо чекать, чтобы не грузить
+  /// всё по два раза
   void loadImages() async{
-    //print('start loading');
-    await repo.init();
-    List<ProcessedImage> images = await repo.loadImages();
+    if (!isInitialized) {
+      await repo.init();
+      isInitialized = true;
 
-    emit(XpaletteLibraryLoadedState(images: images));
-    //print('done loading');
+      this.images = await repo.loadImages();
+    }
+
+    emit(XpaletteLibraryLoadedState());
   }
 
   void _processSelectedImage(ProcessedImage image) async{

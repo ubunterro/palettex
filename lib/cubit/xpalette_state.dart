@@ -13,7 +13,7 @@ class XpaletteInitialState extends XpaletteState {
 }
 
 class XpaletteLibraryLoadedState extends XpaletteState{
-  final List<ImageProvider> images;
+  final List<ProcessedImage> images;
 
   const XpaletteLibraryLoadedState({required this.images});
 
@@ -28,10 +28,9 @@ class XpaletteResultLoadingState extends XpaletteState {
 }
 
 class XpaletteResultState extends XpaletteState {
-  final ImageProvider image;
-  final PaletteGenerator palette;
+  final ProcessedImage image;
 
-  const XpaletteResultState({required this.image, required this.palette});
+  const XpaletteResultState({required this.image});
 
   @override
   List<Object?> get props => [image];

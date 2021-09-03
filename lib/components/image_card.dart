@@ -3,44 +3,64 @@ import 'package:flutter/material.dart';
 import 'package:palettex/components/box_colored.dart';
 
 class ImageCard extends StatelessWidget {
+  final ImageProvider image;
+  // цвета для отображения внизу карточки
+  final List<Color>? colors;
+  final VoidCallback? onTap;
+
   const ImageCard({
     Key? key,
+    required this.image,
+    required this.colors,
+    this.onTap
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.all(Radius.circular(5),),),
-        width: 95,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Hero(
-                  tag: 'photo',
-                  child: Image.asset('images/il.jpg', fit: BoxFit.cover),
+    final List<BoxColored> coloredBoxes;
+
+    if (colors != null){
+      if (colors!.length == 0){
+         coloredBoxes = [];
+      } else {
+        coloredBoxes = [
+          BoxColored(color: colors![0]),
+          BoxColored(color: colors![1]),
+          BoxColored(color: colors![2]),
+          BoxColored(color: colors![3]),
+          BoxColored(color: colors![4]),
+        ];
+      }
+    } else {
+      coloredBoxes = [];
+    }
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.all(Radius.circular(5),),),
+          width: 95,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image(image: image, fit: BoxFit.cover),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              child: Row(
-                children: [
-                  BoxColored(color: Color(0xFFAAFF00)),
-                  BoxColored(color: Color(0xFF00FF00)),
-                  BoxColored(color: Color(0xFF00FFFF)),
-                  BoxColored(color: Color(0xFFFFFF00)),
-                  BoxColored(color: Color(0xFF00FF00)),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: Row(
+                  children: coloredBoxes,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

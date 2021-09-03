@@ -10,6 +10,7 @@ import 'package:palettex/pages/splash_page.dart';
 import 'components/box_colored.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(BlocProvider(create: (context) => XpaletteCubit(), child: PaletteApp(),));
 }
 

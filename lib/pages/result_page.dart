@@ -28,12 +28,8 @@ class ResultPage extends StatelessWidget {
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
-                      child: Hero(
-                        tag: 'photo',
-                        //child: Image.asset('images/il.jpg'),
-                        child: Image(
-                          image: state.image,
-                        ),
+                      child: Image(
+                        image: state.image.image!,
                       ),
                     ),
                   ),
@@ -57,10 +53,10 @@ class ResultPage extends StatelessWidget {
                       child: GridView.builder(
                           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 90),
-                          itemCount: state.palette.colors.length,
+                          itemCount: state.image.colors!.length,
                           itemBuilder: (context, index) {
                             return BigBoxColored(
-                                color: state.palette.colors.elementAt(index));
+                                color: state.image.colors!.elementAt(index));
                           }),
                     ),
                   ),

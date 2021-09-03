@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 
-import 'package:flutter/cupertino.dart';
-
+/// изображение, которое может содержать в себе палитру
 class ProcessedImage {
   ImageProvider? image;
   final File? imageFile;

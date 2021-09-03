@@ -14,25 +14,25 @@ class XpaletteNavigator extends StatelessWidget {
       /// изменении состоянии, а не при его инициализации, то для чекания
       /// инициализации используется билдер, хоть это и не очень хорошо,
       /// навнерное, но так оно хоть работает.
-      builder: (context, state){
-        if (state is XpaletteInitialState){
-          BlocProvider.of<XpaletteCubit>(context).loadImages();
+      builder: (context, state) {
+        if (state is XpaletteInitialState) {
+          BlocProvider.of<XpaletteCubit>(context).checkDoShowOnboarding();
+          //BlocProvider.of<XpaletteCubit>(context).loadImages();
         }
         return Container(child: Text('error'));
       },
-
-      listener: (context, state){
+      listener: (context, state) {
         print(state.runtimeType);
-        if (state is XpaletteLibraryLoadedState){
+        if (state is XpaletteLibraryLoadedState) {
           print('going to lib');
           Navigator.of(context).pushNamed('/library');
-        }
-        else if (state is XpaletteResultState) {
+        } else if (state is XpaletteResultState) {
           Navigator.of(context).pushReplacementNamed('/result');
+        } else if (state is XpaletteOnboardingShownState) {
+          Navigator.of(context).pushNamed('/onboarding');
         } else {
           Navigator.of(context).pushNamed('/loading');
         }
-
       },
     );
   }

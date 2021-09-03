@@ -14,7 +14,6 @@ abstract class ImageRepo{
   Future<String> saveImageFile(ProcessedImage image);
   Future<ProcessedImage> loadImage(String path);
   Future<List<ProcessedImage>> loadImages();
-
 }
 
 class ImageFileRepo extends ImageRepo{

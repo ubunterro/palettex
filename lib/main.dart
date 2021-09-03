@@ -4,6 +4,7 @@ import 'package:palettex/components/image_card.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
 import 'package:palettex/pages/library_page.dart';
 import 'package:palettex/pages/loading_page.dart';
+import 'package:palettex/pages/onboarding_page.dart';
 import 'package:palettex/pages/result_page.dart';
 import 'package:palettex/cubit/xpalette_navigator.dart';
 
@@ -25,20 +26,10 @@ class PaletteApp extends StatelessWidget {
         '/': (context) => XpaletteNavigator(),
         '/library': (context) => LibraryPage(),
         '/result': (context) => ResultPage(),
-        '/loading': (context) => LoadingPage()
+        '/loading': (context) => LoadingPage(),
+        '/onboarding': (context) => OnboardingPage()
       },
-      initialRoute: '/library',
-      // home: BlocBuilder<XpaletteCubit, XpaletteState>(
-      //   builder: (_, state){
-      //     if (state is XpaletteInitialState){
-      //       return LibraryPage();
-      //     } else if (state is XpaletteResultState) {
-      //       return ResultPage();
-      //     } else {
-      //       return LoadingPage();
-      //     }
-      //   },
-      // ),
+      initialRoute: '/onboarding',
     );
   }
 }

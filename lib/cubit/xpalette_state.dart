@@ -8,32 +8,34 @@ class XpaletteInitialState extends XpaletteState {
   XpaletteInitialState();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class XpaletteLoadingState extends XpaletteState {
   XpaletteLoadingState();
 
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 
 class XpaletteLibraryLoadedState extends XpaletteState{
-
-
   const XpaletteLibraryLoadedState();
 
   @override
   List<Object?> get props => [];
+}
 
+class XpaletteCameraActiveState extends XpaletteState{
+  const XpaletteCameraActiveState();
+
+  @override
+  List<Object?> get props => [];
 }
 
 class XpaletteResultLoadingState extends XpaletteState {
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [];
 }
 
 class XpaletteResultState extends XpaletteState {
@@ -43,6 +45,11 @@ class XpaletteResultState extends XpaletteState {
 
   @override
   List<Object?> get props => [image];
+}
 
+class XpaletteOnboardingShownState extends XpaletteState {
+  XpaletteOnboardingShownState();
 
+  @override
+  List<Object?> get props => [];
 }

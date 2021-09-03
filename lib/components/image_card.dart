@@ -7,12 +7,14 @@ class ImageCard extends StatelessWidget {
   // цвета для отображения внизу карточки
   final List<Color>? colors;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   const ImageCard({
     Key? key,
     required this.image,
     required this.colors,
-    this.onTap
+    this.onTap,
+    this.onLongPress
   }) : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class ImageCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Padding(
         padding: EdgeInsets.all(16.0),
         child: Container(

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:palettex/components/image_card.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
 import 'package:palettex/models/processed_image.dart';
-import 'package:palettex/util.dart';
 
 class LibraryPage extends StatelessWidget {
   LibraryPage({Key? key}) : super(key: key);
@@ -25,7 +23,7 @@ class LibraryPage extends StatelessWidget {
                 List<ProcessedImage> images =
                     BlocProvider.of<XpaletteCubit>(context).getImages();
                 //print(images.length);
-                //  генерируем на каждый объект изображения по виджету карточки
+                ///  генерируем на каждый объект изображения по виджету карточки
                 List<ImageCard> previews = images.map((image) {
                   return ImageCard(
                     image: image.image!,

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class ProcessedImage {
   ImageProvider? image;
   final File? imageFile;
-  List<Color>? colors ;
+  List<Color>? colors;
+  late String? key; //ключ в хранилище
 
-  ProcessedImage({this.image, this.imageFile, this.colors});
+  ProcessedImage({this.image, this.imageFile, this.colors, this.key});
 }

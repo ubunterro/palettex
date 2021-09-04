@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:palettex/components/big_box_colored.dart';
-import 'package:palettex/components/image_card.dart';
-import 'package:palettex/components/box_colored.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
 
 class ResultPage extends StatelessWidget {
@@ -13,6 +11,14 @@ class ResultPage extends StatelessWidget {
     return BlocBuilder<XpaletteCubit, XpaletteState>(
       builder: (context, state) {
         if (state is XpaletteResultState) {
+          if (state.showSavedPopup) {
+            state.showSavedPopup = false;
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.grey,
+                  content: Text('Сохранено в галерею')));
+            });
+          }
           return WillPopScope(
             onWillPop: () async {
               BlocProvider.of<XpaletteCubit>(context)
@@ -21,7 +27,29 @@ class ResultPage extends StatelessWidget {
             },
             child: Scaffold(
               appBar: AppBar(
-                title: Text('Result'),
+                title: Text('Результат'),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OutlinedButton(
+                      onPressed: () {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text('Удалено')));
+                        BlocProvider.of<XpaletteCubit>(context)
+                            .deleteImage(state.image);
+                      },
+                      child: Text('Удалить'),
+                      style: OutlinedButton.styleFrom(
+                        primary: Colors.red,
+                        side: BorderSide(
+                          color: Colors.red,
+                          style: BorderStyle.solid,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               body: Column(
                 children: [
@@ -37,20 +65,6 @@ class ResultPage extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(1.0),
-                      // child: GridView.extent(
-                      //   maxCrossAxisExtent: 90,
-                      //   children: [
-                      //     BigBoxColored(color: Color(0xFFFFFF00)),
-                      //     BigBoxColored(color: Color(0xFF00FF88)),
-                      //     BigBoxColored(color: Color(0xFF00FF88)),
-                      //     BigBoxColored(color: Color(0xFF00FFFF)),
-                      //     BigBoxColored(color: Color(0xFF00FF00)),
-                      //     BigBoxColored(color: Color(0xFF00FF88)),
-                      //     BigBoxColored(color: Color(0xFFAAFF00)),
-                      //     BigBoxColored(color: Color(0xFF00FF88)),
-                      //     BigBoxColored(color: Color(0xFF00FF88)),
-                      //   ],
-                      // ),
                       child: GridView.builder(
                           gridDelegate:
                               SliverGridDelegateWithMaxCrossAxisExtent(

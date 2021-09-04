@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:palettex/components/box_colored.dart';
 
+/// Миниатюра изображения в галерее
 class ImageCard extends StatelessWidget {
   final ImageProvider image;
   // цвета для отображения внизу карточки

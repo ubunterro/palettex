@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,23 +22,27 @@ class XpaletteCubit extends Cubit<XpaletteState> {
   bool doShowOnboarding = true;
   late List<ProcessedImage> images;
 
+  // костыль для камеры чтобы не создавать контроллер по нескольку раз
+  // из-за кривых инитстейтов из-за неправильной навигации)))
+  bool cameraInit = false;
+
+  //get cameraInit => cameraInit;
+
 
   List<ProcessedImage> getImages(){
     return images;
   }
 
+  /// Проверяет нужно ли показывать онбординг
   Future<bool> checkDoShowOnboarding() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     doShowOnboarding = (prefs.getBool('onboarding') ?? true);
 
     return doShowOnboarding;
-      // if (true){
-      //   emit(XpaletteOnboardingShownState());
-      // } else {
-      //   closeOnboarding();
-      // }
   }
 
+  /// Закрыть онбординг. Если showForTheLastTime == true
+  /// то больше он отображаться пользователю не будет.
   void closeOnboarding(bool showForTheLastTime) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding', !showForTheLastTime);
@@ -45,7 +50,7 @@ class XpaletteCubit extends Cubit<XpaletteState> {
     loadImages();
   }
 
-  /// вызывается при переходе в InitialState при загрузке приложения, но и при
+  /// Вызывается при переходе в InitialState при загрузке приложения, но и при
   /// выходе из камеры, например, поэтому надо чекать, чтобы не грузить
   /// всё по два раза.
   /// Загружает изображения из репозитория
@@ -71,10 +76,19 @@ class XpaletteCubit extends Cubit<XpaletteState> {
 
     image.colors = palette.colors.toList();
     print(await repo.saveImageFile(image));
-    repo.saveImage(image);
+    String key = await repo.saveImage(image);
+    image.key = key;
     images.add(image);
 
-    emit(XpaletteResultState(image: image));
+    emit(XpaletteResultState(image: image, showSavedPopup: true));
+  }
+
+  /// удаляет изображение отовсюду и возвращает в библиотеку
+  void deleteImage(ProcessedImage image) async {
+    repo.deleteImage(image);
+    images.remove(image);
+
+    emit(XpaletteLibraryLoadedState());
   }
 
   /// вывести уже обработанное изображение на странице результата
@@ -110,7 +124,19 @@ class XpaletteCubit extends Cubit<XpaletteState> {
     }
   }
 
-  void selectImageFromLibrary() async{
+  /// получить фото из кастомной камеры
+  void processImageFromCustomCamera(XFile photoFile) async{
     emit(XpaletteResultLoadingState());
+
+    ImageProvider image = await Util.xfileToImage(photoFile);
+    _processSelectedImage(ProcessedImage(image: image, imageFile: File(photoFile.path)));
+  }
+
+  /// открыть кастомную камеру
+  void takePhotoCustom() async{
+    final cameras = await availableCameras();
+    print(cameras);
+    //final firstCamera = cameras.first;
+    emit(XpaletteCameraActiveState(cameras));
   }
 }

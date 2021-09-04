@@ -11,14 +11,8 @@ class XpaletteInitialState extends XpaletteState {
   List<Object?> get props => [];
 }
 
-class XpaletteLoadingState extends XpaletteState {
-  XpaletteLoadingState();
 
-  @override
-  List<Object?> get props => [];
-}
-
-
+// библиотека загружена, отображается библиотека
 class XpaletteLibraryLoadedState extends XpaletteState{
   const XpaletteLibraryLoadedState();
 
@@ -26,27 +20,33 @@ class XpaletteLibraryLoadedState extends XpaletteState{
   List<Object?> get props => [];
 }
 
+// открыта камера
 class XpaletteCameraActiveState extends XpaletteState{
-  const XpaletteCameraActiveState();
+  const XpaletteCameraActiveState(this.cameras);
+  final List<CameraDescription> cameras;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [cameras];
 }
 
+// загружается результат
 class XpaletteResultLoadingState extends XpaletteState {
   @override
   List<Object?> get props => [];
 }
 
+// отображается загруженное изображение с палитрой
 class XpaletteResultState extends XpaletteState {
   final ProcessedImage image;
+  bool showSavedPopup;
 
-  const XpaletteResultState({required this.image});
+  XpaletteResultState({required this.image, this.showSavedPopup : false});
 
   @override
-  List<Object?> get props => [image];
+  List<Object?> get props => [image, showSavedPopup];
 }
 
+// отображается онбординг
 class XpaletteOnboardingShownState extends XpaletteState {
   XpaletteOnboardingShownState();
 

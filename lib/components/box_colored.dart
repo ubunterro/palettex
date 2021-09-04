@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// цветной квадратик
+/// цветной квадратик в миниатюре
 class BoxColored extends StatelessWidget {
   const BoxColored({
     required this.color,

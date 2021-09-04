@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:palettex/components/image_card.dart';
 import 'package:palettex/cubit/xpalette_cubit.dart';
+import 'package:palettex/pages/camera_page.dart';
 import 'package:palettex/pages/library_page.dart';
 import 'package:palettex/pages/loading_page.dart';
 import 'package:palettex/pages/onboarding_page.dart';
 import 'package:palettex/pages/result_page.dart';
 import 'package:palettex/cubit/xpalette_navigator.dart';
-
-import 'components/box_colored.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +25,8 @@ class PaletteApp extends StatelessWidget {
         '/library': (context) => LibraryPage(),
         '/result': (context) => ResultPage(),
         '/loading': (context) => LoadingPage(),
-        '/onboarding': (context) => OnboardingPage()
+        '/onboarding': (context) => OnboardingPage(),
+        '/camera': (context) => CameraPage()
       },
       initialRoute: '/onboarding',
     );

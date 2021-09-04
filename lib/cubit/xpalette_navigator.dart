@@ -17,7 +17,6 @@ class XpaletteNavigator extends StatelessWidget {
       builder: (context, state) {
         if (state is XpaletteInitialState) {
           BlocProvider.of<XpaletteCubit>(context).checkDoShowOnboarding();
-          //BlocProvider.of<XpaletteCubit>(context).loadImages();
         }
         return Container(child: Text('error'));
       },
@@ -30,6 +29,8 @@ class XpaletteNavigator extends StatelessWidget {
           Navigator.of(context).pushReplacementNamed('/result');
         } else if (state is XpaletteOnboardingShownState) {
           Navigator.of(context).pushNamed('/onboarding');
+        } else if (state is XpaletteCameraActiveState) {
+          Navigator.of(context).pushReplacementNamed('/camera');
         } else {
           Navigator.of(context).pushNamed('/loading');
         }

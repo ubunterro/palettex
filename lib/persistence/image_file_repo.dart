@@ -10,10 +10,11 @@ import 'package:path/path.dart';
 abstract class ImageRepo{
   ImageRepo();
   Future<void> init();
-  Future<void> saveImage(ProcessedImage image);
+  Future<String> saveImage(ProcessedImage image);
   Future<String> saveImageFile(ProcessedImage image);
   Future<ProcessedImage> loadImage(String path);
   Future<List<ProcessedImage>> loadImages();
+  Future<void> deleteImage(ProcessedImage image);
 }
 
 class ImageFileRepo extends ImageRepo{
@@ -36,25 +37,38 @@ class ImageFileRepo extends ImageRepo{
     /// превращаем каждое StorableProcessedImage
     /// в ProcessedImage при помощи map, так же в нём преобразуем
     /// ARGB инты обратно в Color'ы.
-    return _box.values.map((i) => ProcessedImage(
-      image: FileImage(File(i.path)),
-      imageFile: File(i.path),
-      colors: i.palette.map((c) => Color(c)).toList()
-    )).toList();
+    ///
+    ///
+    List<ProcessedImage> images = [];
+    _box.toMap().forEach((key, i) {
+      images.add(ProcessedImage(
+          image: FileImage(File(i.path)),
+          imageFile: File(i.path),
+          key: key,
+          colors: i.palette.map((c) => Color(c)).toList()));
+    });
+
+    return images;
   }
 
-  Future<void> saveImage(ProcessedImage image) async{
+  /// Сохраняет данные об изображении в хранилище
+  Future<String> saveImage(ProcessedImage image) async{
     if (image.imageFile != null && image.colors!= null) {
+      /// в качестве ключа юзаем unix timestamp
+      final String key = DateTime.now().millisecondsSinceEpoch.toString();
       List<int> colors = image.colors!.map((e) => e.value).toList();
 
       StorableProcessedImage toSave = StorableProcessedImage(
           image.imageFile!.path, colors);
-      /// в качестве ключа юзаем unix timestamp
-      _box.put(DateTime.now().millisecondsSinceEpoch.toString(), toSave);
+
+      _box.put(key, toSave);
+      return key;
     }
+    return "";
   }
 
 
+  /// Cохраняет само изображение (файл), хранящееся в объекте ProcessedImage в ФС
   Future<String> saveImageFile(ProcessedImage image) async{
     if (image.imageFile != null) {
       final directory = await getApplicationDocumentsDirectory();
@@ -71,11 +85,23 @@ class ImageFileRepo extends ImageRepo{
     }
   }
 
+  /// создаёт инстанс изображения из файла по его пути
   Future<ProcessedImage> loadImage(String path) async{
     return ProcessedImage(
       image: FileImage(File(path)),
       imageFile: File(path)
     );
+  }
+
+  /// Удаляет из хранилища и библиотеки само изображение и файл с ним.
+  Future<void> deleteImage(ProcessedImage image) async{
+    if (image.imageFile != null) {
+      print(image.imageFile!.path);
+      image.imageFile!.delete();
+      if (image.key != ""){
+        _box.delete(image.key);
+      }
+    }
   }
 
 

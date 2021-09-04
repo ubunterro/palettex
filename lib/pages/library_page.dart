@@ -13,68 +13,67 @@ class LibraryPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-          appBar: AppBar(
-            title: Text('Library'),
-            automaticallyImplyLeading: false,
-          ),
-          body: BlocBuilder<XpaletteCubit, XpaletteState>(
-            builder: (context, state) {
-              if (state is XpaletteLibraryLoadedState) {
-                List<ProcessedImage> images =
-                    BlocProvider.of<XpaletteCubit>(context).getImages();
-                //print(images.length);
-                ///  генерируем на каждый объект изображения по виджету карточки
-                List<ImageCard> previews = images.map((image) {
-                  return ImageCard(
-                    image: image.image!,
-                    colors: image.colors,
-                    onTap: () {
-                      BlocProvider.of<XpaletteCubit>(context)
-                          .showPreprocessedImage(image);
-                    },
-                  );
-                }).toList();
-
-                return Container(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      children: previews,
-                    ),
-                  ),
+        appBar: AppBar(
+          title: Text('Галерея'),
+          automaticallyImplyLeading: false,
+        ),
+        body: BlocBuilder<XpaletteCubit, XpaletteState>(
+          builder: (context, state) {
+            if (state is XpaletteLibraryLoadedState) {
+              List<ProcessedImage> images =
+                  BlocProvider.of<XpaletteCubit>(context)
+                      .getImages()
+                      .reversed
+                      .toList();
+              ///  генерируем на каждый объект изображения по виджету карточки
+              List<ImageCard> previews = images.map((image) {
+                return ImageCard(
+                  image: image.image!,
+                  colors: image.colors,
+                  onTap: () {
+                    BlocProvider.of<XpaletteCubit>(context)
+                        .showPreprocessedImage(image);
+                  },
                 );
-              } else {
-                return Container();
-              }
-            },
-          ),
-          floatingActionButton: SpeedDial(
-            icon: Icons.add_a_photo_rounded,
-            spacing: 30,
-            childrenButtonSize: 80,
-            children: [
-              SpeedDialChild(
-                  label: "Фото",
-                  onTap: () async =>
-                      BlocProvider.of<XpaletteCubit>(context).takePhoto(),
-                  child: Icon(Icons.photo_camera)),
-              SpeedDialChild(
-                  label: "Галерея",
-                  onTap: () async => BlocProvider.of<XpaletteCubit>(context)
-                      .selectImageFromGallery(),
-                  child: Icon(Icons.photo)),
-            ],
-          )
+              }).toList();
 
-          /*FloatingActionButton(
-          onPressed: () async {
-            BlocProvider.of<XpaletteCubit>(context).takePhoto();
+              return Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: previews,
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
           },
-          tooltip: 'Add an image',
-          child: Icon(Icons.add_a_photo_rounded),
-        ),*/ // This trailing comma makes auto-formatting nicer for build methods.
-          ),
+        ),
+        floatingActionButton: SpeedDial(
+          icon: Icons.add_a_photo_rounded,
+          spacing: 30,
+          childrenButtonSize: 80,
+          children: [
+            SpeedDialChild(
+                label: "Фото",
+                onTap: () async =>
+                    BlocProvider.of<XpaletteCubit>(context).takePhoto(),
+                child: Icon(Icons.photo_camera)),
+            SpeedDialChild(
+                label: "Камера",
+                onTap: () async =>
+                    BlocProvider.of<XpaletteCubit>(context).takePhotoCustom(),
+                child: Icon(Icons.camera)),
+            SpeedDialChild(
+                label: "Галерея",
+                onTap: () async => BlocProvider.of<XpaletteCubit>(context)
+                    .selectImageFromGallery(),
+                child: Icon(Icons.photo)),
+          ],
+        ),
+      ),
     );
   }
 }
